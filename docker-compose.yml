@@ -1,17 +1,9 @@
-version '1'
+version: '2'
 services:
-  app:
-    build: .
-  environment:
-    - BUILDKITE
-    - BUILDKITE_API_TOKEN
-    - BUILDKITE_BRANCH
-    - BUILDKITE_BUILD_NUMBER
-    - BUILDKITE_BUILD_URL
-    - BUILDKITE_COMMIT
-    - BUILDKITE_PROJECT_SLUG
-    - BUILDKITE_PULL_REQUEST
-    - BUILDKITE_REPO
-    - CI
-    - CODECOV_TOKEN
-    - DANGER_GITHUB_API_TOKEN
+  builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./lib:/lib
+      - /lib/node_modules
