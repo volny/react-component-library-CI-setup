@@ -1,0 +1,26 @@
+FROM node:8
+
+# Copy source code
+COPY . /app
+
+# Change working directory
+WORKDIR /app
+
+# authenticate to npm
+RUN echo '//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN' > ./.npmrc && \
+npm config set '@$BUILDKITE_ORGANIZATION_SLUG:registry https://registry.npmjs.org'
+
+# install yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get update -yy -qq
+
+# Install dependencies
+RUN yarn install
+
+# Expose API port to the outside
+EXPOSE 3000
+
+# Launch application
+CMD ["yarn","start"]
+
